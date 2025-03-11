@@ -9,87 +9,75 @@ class Examen1108 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Color.fromARGB(255, 253, 221, 228)), // Rosa pastel
-      home: GroupListViewDemo(),
+      home: ContenedorAutonomo(),
     );
   }
 }
-
-class GroupListViewDemo extends StatelessWidget {
-  final Map<String, List<Map<String, dynamic>>> teams = {
-    "Team A": [
-      {"name": "Klay Lewis", "color": Color(0xFFFFB3BA)}, // Rojo pastel
-      {"name": "Ehsan Woodard", "color": Color(0xFFE2C2F2)}, // Morado pastel
-      {"name": "River Bains", "color": Color(0xFFAEC6CF)}, // Azul pastel
-    ],
-    "Team B": [
-      {"name": "Toyah Downs", "color": Color(0xFFF4C2C2)}, // Rosa claro
-      {"name": "Tyla Kane", "color": Color(0xFFB2DFDB)}, // Verde agua pastel
-    ],
-    "Team C": [
-      {"name": "Marcus Romero", "color": Color.fromARGB(255, 179, 158, 128)}, // Naranja pastel
-      {"name": "Farrah Parkes", "color": Color(0xFFE2C2F2)}, // Morado pastel
-    ],
-  };
+class ContenedorAutonomo extends StatelessWidget {
+  const ContenedorAutonomo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 60.0,  // Altura más baja del AppBar
+        elevation: 10.0,  // Sombra más pronunciada
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Mederyth Azul Torres",
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              'Mederyth Azul Torres',
+              style: TextStyle(
+                fontSize: 18.0,  // Tamaño de la letra mayor
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontFamily: 'Roboto',  // Fuente 'Roboto'
+                color: Colors.white,
+              ),
             ),
             Text(
-              "22308051281108",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+              'Mat: 22308051281108',
+              style: TextStyle(
+                fontSize: 14.0,  // Texto más pequeño
+                color: Colors.white,
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.italic,
+                fontFamily: 'Roboto',
+              ),
             ),
           ],
         ),
-        backgroundColor: Color(0xFFFFD1DC), // Rosa pastel
+        backgroundColor: Colors.teal,
       ),
-      body: ListView.builder(
-        itemCount: teams.keys.length,
-        itemBuilder: (context, index) {
-          String team = teams.keys.elementAt(index);
-          List<Map<String, dynamic>> members = teams[team]!;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  team,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              ...members.map((member) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: member["color"],
-                          child: Text(
-                            member["name"].split(" ").map((e) => e[0]).join(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        title: Text(member["name"]),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ))
-            ],
-          );
-        },
-      ),
+      body: ListViewScreen(),
+    );
+  }
+}
+class ListViewScreen extends StatelessWidget {
+  final List<Map<String, String>> items = [
+    {'image': 'https://okdiario.com/img/2019/11/20/-por-que-brilla-el-sol-esta-es-la-razon.jpg', 'title': 'Sun'},
+    {'image': 'https://upload.wikimedia.org/wikipedia/commons/1/10/Supermoon_Nov-14-2016-minneapolis.jpg', 'title': 'Moon'},
+    {'image': 
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIgY0HGhWzUY31cA_zaKAj2SKEOLDfaCyWZjrld1BWrj7ZRqf6aSdgBON6QT0WQWgJalY&usqp=CAU',
+     'title': 'Star'},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(items[index]['image']!),
+            onBackgroundImageError: (exception, stackTrace) {
+              print("Error loading image: ${items[index]['image']}");
+            },
+          ),
+          title: Text(items[index]['title']!),
+        );
+      },
     );
   }
 }
